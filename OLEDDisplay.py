@@ -11,9 +11,15 @@ import adafruit_ssd1306
 
 class OLEDDisplay:
     
-    def __init__(self, font_size) -> None:
+    def __init__(self, n_lines) -> None:
 
-        self._font_size = font_size
+        # font_size  8 -> 4 lines of text
+        # font_size 11 -> 3 lines of text
+        # font_size 17 -> 2 lines of text
+        # font_size 36 -> 1 lines of text - and about 8 characters! :-(
+
+        font_sizes = [36, 17, 11, 8]
+        self._font_size = font_sizes[n_lines-1]
     
         # Create the I2C interface
         i2c = busio.I2C(SCL, SDA)
@@ -76,17 +82,12 @@ class OLEDDisplay:
 
 if __name__ == "__main__":
 
-    # font_size  8 -> 4 lines of text
-    # font_size 11 -> 3 lines of text
-    # font_size 17 -> 2 lines of text
-    # font_size 36 -> 1 lines of text - and about 8 characters! :-(
-    
-    d = OLEDDisplay(17)
+    d = OLEDDisplay(3)
     i = 1
     while True:
         d.draw_messages([
                 "All classes have a function", 
-               f"And this is {i}", 
+               f"And this is #{i}", 
                 "Internet radio stations can be found", 
                 "These displays are small, only about 1\" diagonal"
                 ])
