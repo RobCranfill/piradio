@@ -11,8 +11,10 @@ import adafruit_ssd1306
 
 class OLEDDisplay:
     
-    def __init__(self) -> None:
+    def __init__(self, font_size) -> None:
 
+        self._font_size = font_size
+    
         # Create the I2C interface
         i2c = busio.I2C(SCL, SDA)
 
@@ -21,7 +23,7 @@ class OLEDDisplay:
         #
         self._disp = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c)
 
-        # Clear display.
+        # Clear the display
         self._disp.fill(0)
         self._disp.show()
 
@@ -44,12 +46,10 @@ class OLEDDisplay:
         # same directory as the python script!
         # Some other nice fonts to try: http://www.dafont.com/bitmap.php
         #
-        self._font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 9)
+        self._font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', self._font_size)
 
 
-        font2 = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 9)
-
-    def draw_messages(self, s1, s2, s3, s4):
+    def draw_messages(self, msg_list):
 
         padding = -2
         top = padding
@@ -61,13 +61,8 @@ class OLEDDisplay:
 
         # Write four lines of text.
 
-        self._draw.text((x, top + 0),  s1, font=self._font, fill=255)
-        self._draw.text((x, top + 8),  s2, font=self._font, fill=255)
-        self._draw.text((x, top + 16), s3, font=self._font, fill=255)
-        self._draw.text((x, top + 24), s4, font=self._font, fill=255)
-
-        s5 = "Is there more????"
-        self._draw.text((x, top + 32), s5, font=self._font, fill=255)
+        for i in range(len(msg_list)):
+            self._draw.text((x, top + i*self._font_size), msg_list[i], font=self._font, fill=255)
 
         # Display image.
         self._disp.image(self._image)
@@ -81,12 +76,19 @@ class OLEDDisplay:
 
 if __name__ == "__main__":
 
-    d = OLEDDisplay()
+    # font_size  8 -> 4 lines of text
+    # font_size 11 -> 3 lines of text
+    # font_size 17 -> 2 lines of text
+    # font_size 36 -> 1 lines of text - and about 8 characters! :-(
+    
+    d = OLEDDisplay(17)
     i = 1
     while True:
-        d.draw_messages("All classes have a function", 
-                        f"And this is {i}", 
-                        "Internet radio stations can be found", 
-                        "These displays are small, only about 1\" diagonal")
+        d.draw_messages([
+                "All classes have a function", 
+               f"And this is {i}", 
+                "Internet radio stations can be found", 
+                "These displays are small, only about 1\" diagonal"
+                ])
         i = i + 1
         # time.sleep(.1)
