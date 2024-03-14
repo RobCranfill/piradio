@@ -1,8 +1,9 @@
 # Display wrapper for I2C OLED display.
 # robcranfill@gmail.com
 #
+# TODO: destructor? clear screen
+#
 import time
-import subprocess
 
 from board import SCL, SDA
 import busio
@@ -34,7 +35,8 @@ class OLEDDisplay:
         self._disp.show()
 
         # Create blank image for drawing.
-        # Make sure to create image with mode '1' for 1-bit color.
+        # Image mode '1' is 1-bit color.
+        #
         self._width = self._disp.width
         self._height = self._disp.height
         self._image = Image.new("1", (self._width, self._height))
@@ -42,17 +44,28 @@ class OLEDDisplay:
         # Get drawing object to draw on image.
         self._draw = ImageDraw.Draw(self._image)
 
-        # Draw a black filled box to clear the image.
-        self._draw.rectangle((0, 0, self._width, self._height), outline=0, fill=0)
+        # # Draw a black filled box to clear the image.
+        ### erm, didn't we already do this?
+        # self._draw.rectangle((0, 0, self._width, self._height), outline=0, fill=0)
 
         # Load default font.
-        self._font = ImageFont.load_default()
+        # self._font = ImageFont.load_default()
         
-        # Alternatively load a TTF font.  Make sure the .ttf font file is in the
-        # same directory as the python script!
+        # Alternatively, load a TTF font.
         # Some other nice fonts to try: http://www.dafont.com/bitmap.php
         #
         self._font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', self._font_size)
+
+
+    # def clear_display(self):
+    #     self._disp.fill(0)
+    #     self._disp.show()
+
+
+    def __del__(self):
+        # clear_display(self)
+        self._disp.fill(0)
+        self._disp.show()
 
 
     def draw_messages(self, msg_list):
@@ -65,8 +78,8 @@ class OLEDDisplay:
         # Draw a black filled box to clear the image.
         self._draw.rectangle((0, 0, self._width, self._height), outline=0, fill=0)
 
-        # Write four lines of text.
-
+        # Write the text.
+        #
         for i in range(len(msg_list)):
             self._draw.text((x, top + i*self._font_size), msg_list[i], font=self._font, fill=255)
 
@@ -75,11 +88,9 @@ class OLEDDisplay:
         self._disp.show()
 
 
-    def clear_display(self):
-        self._disp.fill(0)
-        self._disp.show()
 
-
+# Example of how to use this class
+#
 if __name__ == "__main__":
 
     d = OLEDDisplay(3)
