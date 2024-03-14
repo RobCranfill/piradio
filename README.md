@@ -24,6 +24,8 @@ Internet radio on a RPiZeroW!
 
 ## Install
 * install mpd, mpc
+* Install Adafruit CircuitPython libraries ("Blinka")
+* pip3 install adafruit-circuitpython-ssd1306
 
 ## Prep
 * config.txt
