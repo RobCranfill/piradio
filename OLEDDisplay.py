@@ -10,6 +10,7 @@ import busio
 from PIL import Image, ImageDraw, ImageFont
 import adafruit_ssd1306
 
+
 class OLEDDisplay:
     
     def __init__(self, n_lines) -> None:
