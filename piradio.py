@@ -19,7 +19,8 @@ if __name__ == "__main__":
 
     station_data = (
         ("Radio Dublin", "http://uk1.internet-radio.com:8355/stream"),
-        ("Radio Gaga",   "http://relay2.slayradio.org:8000")
+        ("SLAY Radio",   "http://relay2.slayradio.org:8000"),
+        ("KEXP",         "http://live-mp3-128.kexp.org/kexp128.mp3")
     )
 
 
