@@ -6,10 +6,12 @@ import time
 
 class RadioPlayer:
 
-    """Station list is list of (station name, station URL)"""
-    def __init__(self, station_list):
+    """Station list is tuple of (station name, station URL)"""
+    def __init__(self, display, station_list):
 
+        self._display = display
         self._station_list = station_list
+
         self._selected_station_index = 0
 
         self._client = MPDClient()
@@ -41,7 +43,12 @@ class RadioPlayer:
         self._selected_station_index = self._selected_station_index + 1
         if self._selected_station_index == len(self._station_list):
             self._selected_station_index = 0
-        print(f"Station is now {self._station_list[self._selected_station_index][0]}")
+
+        sta = self._station_list[self._selected_station_index][0]
+        song = "what?"
+        print(f"Station is now {sta}, song {song}")
+        self._display.show_messages((sta, song))
+
         self._client.next()
 
     def prev_station(self):
@@ -49,7 +56,12 @@ class RadioPlayer:
         self._selected_station_index = self._selected_station_index - 1
         if self._selected_station_index < 0:
             self._selected_station_index = len(self._station_list) - 1
-        print(f"Station is now {self._station_list[self._selected_station_index][0]}")
+
+        sta = self._station_list[self._selected_station_index][0]
+        song = "what?"
+        print(f"Station is now {sta}, song {song}")
+        self._display.show_messages((sta, song))
+
         self._client.previous()
 
     def volume_up(self):

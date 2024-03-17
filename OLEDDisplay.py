@@ -69,7 +69,7 @@ class OLEDDisplay:
         self._disp.show()
 
 
-    def draw_messages(self, msg_list):
+    def show_messages(self, msg_list):
 
         padding = -2
         top = padding
@@ -97,11 +97,11 @@ if __name__ == "__main__":
     d = OLEDDisplay(3)
     i = 1
     while True:
-        d.draw_messages([
+        d.show_messages((
                 "All classes have a function", 
                f"And this is #{i}", 
                 "Internet radio stations can be found", 
                 "These displays are small, only about 1\" diagonal"
-                ])
+            ))
         i = i + 1
         # time.sleep(.1)

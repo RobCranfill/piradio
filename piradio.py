@@ -17,14 +17,14 @@ GESTURE_RIGHT = 4
 
 if __name__ == "__main__":
 
-    urls = [
+    station_data = (
         ("Radio Dublin", "http://uk1.internet-radio.com:8355/stream"),
         ("Radio Gaga",   "http://relay2.slayradio.org:8000")
-        ]
+    )
 
 
     disp = OLEDDisplay.OLEDDisplay(2)
-    disp.draw_messages(["PiRadio v0.1", urls[0][0]])
+    disp.show_messages(["PiRadio v0.1"])
 
     i2c = busio.I2C(board.SCL, board.SDA)
     sensor = adafruit_apds9960.apds9960.APDS9960(i2c)
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     sensor.enable_gesture = True
 
 
-    rp = RadioPlayer(urls)
+    rp = RadioPlayer(disp, station_data)
     rp.start_playing()
 
     while True:
