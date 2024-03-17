@@ -42,6 +42,7 @@ class RadioPlayer:
         if self._selected_station_index == len(self._station_list):
             self._selected_station_index = 0
         print(f"Station is now {self._station_list[self._selected_station_index][0]}")
+        self._client.next()
 
     def prev_station(self):
         '''Start playing the previous station in the station list.'''
@@ -49,6 +50,7 @@ class RadioPlayer:
         if self._selected_station_index < 0:
             self._selected_station_index = len(self._station_list) - 1
         print(f"Station is now {self._station_list[self._selected_station_index][0]}")
+        self._client.previous()
 
     def volume_up(self):
         print("Volume up?")
