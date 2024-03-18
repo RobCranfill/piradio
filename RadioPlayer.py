@@ -7,21 +7,18 @@ import time
 class RadioPlayer:
 
     """Station list is tuple of (station name, station URL)"""
-    def __init__(self, display, station_list):
+    def __init__(self, station_list):
 
-        self._display = display
         self._station_list = station_list
 
-        self._selected_station_index = 0
-
         self._client = MPDClient()
-        
         self._client.timeout = 10                # network timeout in seconds (floats allowed), default: None
         self._client.idletimeout = None          # timeout for fetching the result of the idle command, default: None
         self._client.connect("localhost", 6600)
 
         for s in station_list:
             self._client.add(s[1])
+        self._selected_station_index = 0
 
 
     def __del__(self):
@@ -43,12 +40,7 @@ class RadioPlayer:
         self._selected_station_index = self._selected_station_index + 1
         if self._selected_station_index == len(self._station_list):
             self._selected_station_index = 0
-
-        sta = self._station_list[self._selected_station_index][0]
-        song = "what?"
-        print(f"Station is now {sta}, song {song}")
-        self._display.show_messages((sta, song))
-
+        
         self._client.next()
 
     def prev_station(self):
@@ -56,13 +48,25 @@ class RadioPlayer:
         self._selected_station_index = self._selected_station_index - 1
         if self._selected_station_index < 0:
             self._selected_station_index = len(self._station_list) - 1
-
-        sta = self._station_list[self._selected_station_index][0]
-        song = "what?"
-        print(f"Station is now {sta}, song {song}")
-        self._display.show_messages((sta, song))
-
         self._client.previous()
+
+    def get_current_song_title(self):
+        cs = self._client.currentsong()
+        if cs is None:
+            print("Song is none!")
+            return "(None)"
+        print(f"self._client.currentsong(): {self._client.currentsong()}")
+        title = cs.get("title")
+        if title is None:
+            print("title is none!")
+            title = "(None)"
+        return title
+
+    def get_current_station_name(self):
+        return "Station X"
+
+    def get_status(self):
+        return self._client.status()
 
     def volume_up(self):
         print("Volume up?")

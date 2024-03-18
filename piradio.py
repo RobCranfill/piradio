@@ -20,7 +20,8 @@ if __name__ == "__main__":
     station_data = (
         ("Radio Dublin", "http://uk1.internet-radio.com:8355/stream"),
         ("SLAY Radio",   "http://relay2.slayradio.org:8000"),
-        ("KEXP",         "http://live-mp3-128.kexp.org/kexp128.mp3")
+        # ("KEXP",       "https://stream.starfm.de/berlin/mp3-192/"),
+        ("ROCK ANTENNE", "http://stream.rockantenne.de/90er-rock/stream/mp3")
     )
 
 
@@ -33,7 +34,7 @@ if __name__ == "__main__":
     sensor.enable_gesture = True
 
 
-    rp = RadioPlayer(disp, station_data)
+    rp = RadioPlayer(station_data)
     rp.start_playing()
 
     while True:
@@ -42,13 +43,25 @@ if __name__ == "__main__":
         #     print('Saw gesture: {0}'.format(gesture))
             if gesture == GESTURE_LEFT:
                 rp.prev_station()
-                # print("Prev!")
+
+                sta = rp.get_current_station_name()
+                song = rp.get_current_song_title()
+                print(f"Station is now {sta}, song {song}")
+                disp.show_messages((sta, song))
+
             elif gesture == GESTURE_RIGHT:
                 rp.next_station()
-                # print("Next!")
+
+                sta = rp.get_current_station_name()
+                song = rp.get_current_song_title()
+                print(f"Station is now {sta}, song {song}")
+                disp.show_messages((sta, song))
+
             elif gesture == GESTURE_UP:
                 print("UP?!")
+
             elif gesture == GESTURE_DOWN:
                 print("DOWN?!")
+
             else:
                 print("What?!")
