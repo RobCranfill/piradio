@@ -26,11 +26,11 @@ if __name__ == "__main__":
 
 
     disp = OLEDDisplay.OLEDDisplay(2)
-    disp.show_messages(["PiRadio v0.1"])
+    disp.show_messages(["PiRadio v0.1", "Loading..."])
 
     i2c = busio.I2C(board.SCL, board.SDA)
     sensor = adafruit_apds9960.apds9960.APDS9960(i2c)
-    sensor.enable_proximity = True
+    sensor.enable_proximity = True # must be True for gestures, too
     sensor.enable_gesture = True
 
 
@@ -40,22 +40,23 @@ if __name__ == "__main__":
     while True:
         gesture = sensor.gesture()
         if gesture != 0:
+
         #     print('Saw gesture: {0}'.format(gesture))
             if gesture == GESTURE_LEFT:
                 rp.prev_station()
 
-                sta = rp.get_current_station_name()
-                song = rp.get_current_song_title()
-                print(f"Station is now {sta}, song {song}")
-                disp.show_messages((sta, song))
+                # sta = rp.get_current_station_name()
+                # song = rp.get_current_song_title()
+                # print(f"Station is now {sta}, song {song}")
+                # disp.show_messages((sta, song))
 
             elif gesture == GESTURE_RIGHT:
                 rp.next_station()
 
-                sta = rp.get_current_station_name()
-                song = rp.get_current_song_title()
-                print(f"Station is now {sta}, song {song}")
-                disp.show_messages((sta, song))
+                # sta  = rp.get_current_station_name()
+                # song = rp.get_current_song_title()
+                # print(f"Station is now {sta}, song {song}")
+                # disp.show_messages((sta, song))
 
             elif gesture == GESTURE_UP:
                 print("UP?!")
@@ -65,3 +66,13 @@ if __name__ == "__main__":
 
             else:
                 print("What?!")
+
+            # status = rp.get_status()
+            # print(f"status is now {status}")
+            # # disp.show_messages((sta, song))
+
+            sta = rp.get_current_station_name()
+            song = rp.get_current_song_title()
+            print(f"Station is now '{sta}', song '{song}'")
+            disp.show_messages((sta, song))
+

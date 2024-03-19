@@ -16,10 +16,10 @@ url = "http://uk1.internet-radio.com:8355/stream"
 
 client.add(url)
 
-print(f"playing {url}....")
+print(f"playing {url} for 20 seconds....")
 client.play()
 
-time.sleep(10)
+time.sleep(20)
 client.stop()
 print("stopped.")
 
