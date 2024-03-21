@@ -116,3 +116,9 @@ volume: 75%   repeat: off   random: off   single: off   consume: off
     Length1=-1
     Version=2
 </pre>
+
+## Notes re mpc & mpd
+
+* Maybe need to set timeout for some (like 'STAR FM MAXIMUM ROCK Berlin')
+
+  MPD error: Failed to decode http://relay2.slayradio.org:8000; CURL failed: Connection timed out after 10010 milliseconds

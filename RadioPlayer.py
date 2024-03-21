@@ -6,26 +6,32 @@ import time
 
 class RadioPlayer:
 
-    """Station list is tuple of (station name, station URL)"""
+    """Station list just station URLs"""
     def __init__(self, station_list):
-
-        self._station_list = station_list
 
         self._client = MPDClient()
         self._client.timeout = 10                # network timeout in seconds (floats allowed), default: None
         self._client.idletimeout = None          # timeout for fetching the result of the idle command, default: None
         self._client.connect("localhost", 6600)
 
-        for s in station_list:
-            self._client.add(s[1])
-        self._selected_station_index = 0
-
+        # This client just talks to the server and builds a playlist there. 
+        # We need to clear the current playlist, then add the URLs to the playlist.
+        #
+        self._client.clear()
+        for url in station_list:
+            self._client.add(url)
 
     def __del__(self):
         self._client.stop()
         self._client.close()
         self._client.disconnect()
         print("RadioPlayer destroyed.")
+
+    def check_stations(self):
+        print(" check_stations -------------------------")
+        for p in self._client.listplaylists():
+            print(f"Playlist: {p}")
+        print(" ----------------------------------------")
 
     def start_playing(self):
         print("RadioPlayer starting.")
@@ -37,25 +43,30 @@ class RadioPlayer:
 
     def next_station(self):
         '''Start playing the next station in the station list.'''
-        self._selected_station_index = self._selected_station_index + 1
-        if self._selected_station_index == len(self._station_list):
-            self._selected_station_index = 0
-        
-        self._client.next()
+
+        try:
+            self._client.next()
+        except:
+            print("\n *** next_station timed out!\n")
+
 
     def prev_station(self):
         '''Start playing the previous station in the station list.'''
-        self._selected_station_index = self._selected_station_index - 1
-        if self._selected_station_index < 0:
-            self._selected_station_index = len(self._station_list) - 1
         self._client.previous()
 
     def get_current_song_title(self):
-        cs = self._client.currentsong()
+
+        cs = None
+        try:
+            cs = self._client.currentsong()
+        except:
+            print("Timed out!")
+            return "Timeout!"
+
+        print(f"self._client.currentsong(): {self._client.currentsong()}")
         if cs is None:
             print("Song is none!")
             return "(None)"
-        print(f"self._client.currentsong(): {self._client.currentsong()}")
         title = cs.get("title")
         if title is None:
             print("title is none!")
@@ -63,10 +74,24 @@ class RadioPlayer:
         return title
 
     def get_current_station_name(self):
-        return "Station X"
+
+        cs = self._client.currentsong()
+        # print(f"self._client.currentsong(): {self._client.currentsong()}")
+        if cs is None:
+            print("Song is none!")
+            return "(None)"
+        name = cs.get("name")
+        if name is None:
+            print("name is none!")
+            name = "(None)"
+        return name
 
     def get_status(self):
         return self._client.status()
+
+    """ Not so useful? """
+    def get_stats(self):
+        return self._client.stats()
 
     def volume_up(self):
         print("Volume up?")
@@ -84,5 +109,4 @@ if __name__ == "__main__":
     rp.start_playing()
     time.sleep(10)
     rp.stop_playing()
-
 

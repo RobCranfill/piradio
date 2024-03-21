@@ -18,10 +18,11 @@ GESTURE_RIGHT = 4
 if __name__ == "__main__":
 
     station_data = (
-        ("Radio Dublin", "http://uk1.internet-radio.com:8355/stream"),
-        ("SLAY Radio",   "http://relay2.slayradio.org:8000"),
-        # ("KEXP",       "https://stream.starfm.de/berlin/mp3-192/"),
-        ("ROCK ANTENNE", "http://stream.rockantenne.de/90er-rock/stream/mp3")
+        "http://uk1.internet-radio.com:8355/stream",
+        # "http://relay2.slayradio.org:8000", # often dead?
+        # "https://stream.starfm.de/berlin/mp3-192/",
+        "http://uk7.internet-radio.com:8000/",
+        "http://stream.rockantenne.de/90er-rock/stream/mp3"
     )
 
 
@@ -35,6 +36,11 @@ if __name__ == "__main__":
 
 
     rp = RadioPlayer(station_data)
+
+    rp.check_stations()
+    print(f"status: {rp.get_status()}")
+
+
     rp.start_playing()
 
     while True:
