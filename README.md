@@ -2,18 +2,19 @@
 Internet radio on a RPiZeroW!
 
 
-# Questions
- * Update Pi to Bookworm?
+# Open Questions
+ * (Also see 'problems' below)
 
 
 # Testbed
 * PiZero1W - PiZero W v1.1 - sufficient?
-* Raspian bullseye - upgrade?
+* Raspian 'Bullseye'
+  * Update to Bookworm?
 * Generic PCM5102 PCM module
-* Display?
-  * How to coexist with PCM thingy?
-* Controller
-  * Gesture controller?! :-)
+* Mini OLED display
+  * How to coexist with I2C bus?
+  * Soldered I2C pigtail to top of OLED
+* APDS-9960 gesture contoller
 
 
 # RPi prep
@@ -22,10 +23,12 @@ Internet radio on a RPiZeroW!
 
  Note that `dtoverlay=hifiberry-dac` is correct.
 
+
 ## Install
 * install mpd, mpc
 * Install Adafruit CircuitPython libraries ("Blinka")
 * pip3 install adafruit-circuitpython-ssd1306
+
 
 ## Prep
 * config.txt
@@ -65,6 +68,18 @@ rob@pizerow1:/boot $
 </pre>
 
 ## Problems
+
+* Audio out is noisy - sensitive to touch
+  * A result of breaboarding?
+
+* Network latency
+  * Slow to start play
+    - Intrinsic to mpc/mpd - happens from command line too
+  * Some streams time out
+    - Again, intrinsic to protocol/situation.
+  * Upshot is that we can't expect station switching to happen instantaneously.
+
+### Problems RESOLVED
 * Volume won't change
 <pre>
 rob@pizerow1:/boot $ mpc volume 50
@@ -94,7 +109,6 @@ The Zone - Dublin: The Vanns - Harder To Find
 [playing] #2/2   0:41/0:00 (0%)
 volume: 75%   repeat: off   random: off   single: off   consume: off
 </pre>
-
 
 
 
