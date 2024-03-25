@@ -21,11 +21,17 @@ class RadioPlayer:
         for url in station_list:
             self._client.add(url)
 
+        self._debug = False
+
+
     def __del__(self):
         self._client.stop()
         self._client.close()
         self._client.disconnect()
         print("RadioPlayer destroyed.")
+
+    def set_debug(self, debug):
+        self._debug = debug
 
     def check_stations(self):
         print(" check_stations -------------------------")
@@ -63,7 +69,7 @@ class RadioPlayer:
             print("Timed out!")
             return "Timeout!"
 
-        print(f"self._client.currentsong(): {self._client.currentsong()}")
+        print(f"get_current_song_title: currentsong(): {self._client.currentsong()}")
         if cs is None:
             print("Song is none!")
             return "(None)"
@@ -75,8 +81,14 @@ class RadioPlayer:
 
     def get_current_station_name(self):
 
-        cs = self._client.currentsong()
-        # print(f"self._client.currentsong(): {self._client.currentsong()}")
+        cs = None
+        try:
+            cs = self._client.currentsong()
+        except:
+            print("Timed out!")
+            return "Timeout!"
+
+        # print(f"get_current_station_name: currentsong(): {self._client.currentsong()}")
         if cs is None:
             print("Song is none!")
             return "(None)"

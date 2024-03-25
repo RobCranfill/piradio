@@ -27,6 +27,10 @@ do
     echo -e "\nPlaying # $foo...."
 	mpc play
 	sleep 10
+
+# 'stop' seems to reset the queue - or our position in it.
+#    mpc stop
+
     mpc next
 done
 mpc stop
