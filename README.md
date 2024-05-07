@@ -2,6 +2,15 @@
 Internet radio on a RPiZeroW!
 
 
+# New Minimum Viable Product - May '24
+ * Configurable
+   * Via Adafruit IoT?
+ * Workaround for missing metadata
+   * Just show canned station name; more if available
+ * Using speaker and amp - NOT PCM5102 ???
+   * So we need to reconfigure Linux ????
+
+
 # Open Questions
  * (Also see 'problems' below)
 
@@ -68,10 +77,6 @@ rob@pizerow1:/boot $
 </pre>
 
 ## Problems
-
-* Audio out is noisy - sensitive to touch
-  * A result of breaboarding?
-
 * Network latency
   * Slow to start play
     - Intrinsic to mpc/mpd - happens from command line too
@@ -80,6 +85,8 @@ rob@pizerow1:/boot $
   * Upshot is that we can't expect station switching to happen instantaneously.
 
 ### Problems RESOLVED
+* Audio out is noisy - sensitive to touch
+  * A result of breaboarding? Yes! Fixed.
 * Volume won't change
 <pre>
 rob@pizerow1:/boot $ mpc volume 50

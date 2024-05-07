@@ -14,6 +14,8 @@ mpc add "http://stream.rockantenne.de/90er-rock/stream/mp3"
 # mpc add "http://relay2.slayradio.org:8000"
 mpc add "https://stream.starfm.de/berlin/mp3-192/"
 
+mpc volume 100
+
 # mpc stats # this is never useful, seeing as we don't have a backing database
 mpc status
 
